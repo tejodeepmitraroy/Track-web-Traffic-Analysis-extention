@@ -1,13 +1,30 @@
 {
   "manifest_version": 3,
-  "name": "Traffic Analysis Tool",
+  "name": "Track Web - Traffic Analysis Tool",
   "version": "1.0.0",
-  "description": "Slide-in traffic analytics dashboard.",
+  "description": "Sidebar traffic analytics dashboard.",
   "action": {
-    "default_popup": "index.html",
-    "default_title": "Open Traffic Panel"
+    "default_title": "Toggle Traffic Panel"
   },
-  "background": { "service_worker": "background.js" },
-  "permissions": ["tabs", "storage", "activeTab", "scripting"],
-  "host_permissions": ["<all_urls>"]
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab",
+    "scripting",
+    "sidePanel"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["index.html", "assets/*", "icons/*"],
+      "matches": ["<all_urls>"],
+      "use_dynamic_url": true
+    }
+  ]
 }

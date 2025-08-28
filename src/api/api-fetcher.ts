@@ -1,13 +1,15 @@
-import { apiClient } from "../config/api-config"
+import { apiClient } from '../config/api-config';
 
-export const getAnalysis= async(domain:string) : Promise<getAnalysis | null>  => {
-    try {
-       const response = await apiClient.get<getAnalysis>(
-         `/get-analysis?domain=${domain}`
-       );
-       return response.data;
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-}
+export const getAnalysis = async (
+	domain: string
+): Promise<GetAnalysis | null> => {
+	try {
+		const response = await apiClient.get<GetAnalysis>(
+			`/get-analysis?domain=${domain}`
+		);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return null;
+	}
+};

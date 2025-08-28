@@ -2,13 +2,12 @@
 // import "./App.css";
 // import TrafficCard from "./components/TrafficCard";
 
-import { useCallback, useEffect, useState } from "react";
-import "./App.css";
-
-import { getAnalysis } from "./api/api-fetcher";
-import { Line, LineChart, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import Card, { CardContent, CardHeader, StatCard, ChartCard, CardTitle } from "./components/ui/Card";
-import { FiUsers, FiTrendingUp, FiEye, FiClock } from "react-icons/fi";
+import { useCallback, useEffect, useState } from 'react';
+import './App.css';
+import Header from './components/ui/Header';
+import Card, { CardContent, CardHeader, CardTitle, StatCard } from './components/ui/Card';
+import VisitOverTime from './components/Section/VisitOverTime';
+import { FiClock, FiEye, FiTrendingUp, FiUsers } from 'react-icons/fi';
 
 // interface TrafficData {
 //   visits?: number;
@@ -99,59 +98,87 @@ import { FiUsers, FiTrendingUp, FiEye, FiClock } from "react-icons/fi";
 // export default App;
 
 export default function App() {
-  const [analysisData, setAnalysisData] = useState<any>(null);
+  const [analysisData] = useState<GetAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const getAnalysisData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const data = await getAnalysis("google.com");
-      setAnalysisData(data);
-    } catch (err) {
-      setError("Failed to fetch analysis data");
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+	const getAnalysisData = useCallback(async () => {
+		try {
+			setIsLoading(true);
+			// const data = await getAnalysis('google.com');
+			// setAnalysisData(data);
+		} catch (err) {
+			setError('Failed to fetch analysis data');
+			console.error(err);
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
 
-  useEffect(() => {
-    getAnalysisData();
-  }, [getAnalysisData]);
+	useEffect(() => {
+		getAnalysisData();
+	}, [getAnalysisData]);
 
-  // Mock data for the chart
-  const chartData = [
-    { name: 'Jan', visitors: 4000 },
-    { name: 'Feb', visitors: 3000 },
-    { name: 'Mar', visitors: 5000 },
-    { name: 'Apr', visitors: 2780 },
-    { name: 'May', visitors: 1890 },
-    { name: 'Jun', visitors: 2390 },
-  ];
+	// Mock data for the chart
+	// const chartData = [
+	// 	{ name: 'Jan', visitors: 4000 },
+	// 	{ name: 'Feb', visitors: 3000 },
+	// 	{ name: 'Mar', visitors: 5000 },
+	// 	{ name: 'Apr', visitors: 2780 },
+	// 	{ name: 'May', visitors: 1890 },
+	// 	{ name: 'Jun', visitors: 2390 },
+	// ];
 
-  if (isLoading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
-  }
+	if (isLoading) {
+		return (
+			<div className="flex h-screen items-center justify-center">
+				Loading...
+			</div>
+		);
+	}
 
-  if (error) {
-    return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
-  }
+	if (error) {
+		return (
+			<div className="flex h-screen items-center justify-center text-red-500">
+				{error}
+			</div>
+		);
+	}
 
-  return (
-    <section className="min-h-screen  p-4 ">
-      <div className="w-full max-w-2xl bg-gray-50 border mx-auto p-4">
-        <header className="mb-8 flex ">
-          <h1 className="text-3xl font-bold text-gray-900"> Trac web</h1>
-          <p className="text-gray-600">
-            Overview of your website's performance metrics
-          </p>
-        </header>
+	return (
+		<section className="h-full w-full bg-white">
+			<div className="content-container">
+				<Header domain={'google.com'} />
+				<section className="grid w-full grid-cols-4 gap-6">
+					<Card>
+						<CardHeader className="px-2 text-left">
+							<CardTitle className="text-sm">Total Visitors</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<span className="text-3xl font-bold">3000</span>
+
+							<p className="text-2xl font-bold text-gray-900">
+								{analysisData?.Engagments.Visits}
+							</p>
+						</CardContent>
+					</Card>{' '}
+					<Card>
+						<CardHeader>
+							<CardTitle>Total Countries</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<p className="text-2xl font-bold text-gray-900">
+								{analysisData?.TopCountryShares.length}
+							</p>
+						</CardContent>
+					</Card>
+				</section>
 
         
-
-        {/* Stats Grid */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+				{/* Visits Over Time */}
+				<VisitOverTime/>
+				{/* Stats Grid */}
+				 <div className="grid grid-cols-4 gap-6 mb-8">
           <StatCard 
             title="Total Visitors" 
             value="24,531" 
@@ -180,10 +207,9 @@ export default function App() {
             trend="down"
             trendValue="3% from last month"
           />
-        </div> */}
-
-        {/* Charts Row */}
-        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        </div> 
+				{/* Charts Row */}
+				{/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <ChartCard title="Visitor Trends">
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
@@ -223,9 +249,8 @@ export default function App() {
             </div>
           </ChartCard>
         </div> */}
-
-        {/* Additional Info Card */}
-        {/* <Card>
+				{/* Additional Info Card */}
+				{/* <Card>
           <CardHeader>
             <CardTitle>Traffic Sources</CardTitle>
           </CardHeader>
@@ -246,7 +271,8 @@ export default function App() {
             </div>
           </CardContent>
         </Card> */}
-      </div>
-    </section>
-  );
+			</div>
+		</section>
+		
+	);
 }

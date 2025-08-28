@@ -27,10 +27,10 @@
 
 @layer base {
   * {
-    @apply w-full  h-dvh ;
+    @apply w-full m-0 p-0;
   }
   body {
-    @apply w-full w-full bg-gray-100;
+    @apply w-full bg-gray-100;
   }
 
   h1{
