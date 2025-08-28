@@ -3,28 +3,42 @@
 
   const panel = document.createElement("div");
   panel.id = "traffic-extension-panel";
-  panel.style.position = "fixed";
-  panel.style.top = "0";
-  panel.style.right = "-400px"; // start hidden
-  panel.style.width = "400px";
-  panel.style.height = "100%";
-  panel.style.background = "white";
-  panel.style.boxShadow = "0 0 10px rgba(0,0,0,0.3)";
-  panel.style.transition = "right 0.3s ease";
-  panel.style.zIndex = "999999";
+  Object.assign(panel.style, {
+    position: "fixed",
+    top: "0",
+    right: "-420px",
+    width: "420px",
+    height: "100vh",
+    zIndex: "2147483647",
+    boxShadow: "0 0 20px rgba(0,0,0,0.25)",
+    borderLeft: "1px solid #e5e7eb",
+    background: "white",
+    transition: "right 300ms ease",
+  });
 
+  const iframe = document.createElement("iframe");
+  iframe.src = chrome.runtime.getURL("index.html"); // your React build
+  Object.assign(iframe.style, {
+    width: "100%",
+    height: "100%",
+    border: "none",
+  });
+
+  panel.appendChild(iframe);
   document.body.appendChild(panel);
 
-  // load React app bundle into panel
-  const iframe = document.createElement("iframe");
-  iframe.src = chrome.runtime.getURL("index.html"); // React build
-  iframe.style.width = "100%";
-  iframe.style.height = "100%";
-  iframe.style.border = "none";
-  panel.appendChild(iframe);
-
-  // Slide in
+  // slide in
   requestAnimationFrame(() => {
-    panel.style.right = "0px";
+    panel.style.right = "0";
   });
+
+  // close on ESC
+  const onKey = (e) => {
+    if (e.key === "Escape") {
+      panel.style.right = "-420px";
+      setTimeout(() => panel.remove(), 300);
+      window.removeEventListener("keydown", onKey);
+    }
+  };
+  window.addEventListener("keydown", onKey);
 })();

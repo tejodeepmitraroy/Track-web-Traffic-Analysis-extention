@@ -1,15 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Traffic Analysis Extension",
-  "version": "1.0",
-  "description": "Analyze website traffic sources using public APIs",
+  "name": "Traffic Analysis Tool",
+  "version": "1.0.0",
+  "description": "Slide-in traffic analytics dashboard.",
   "action": {
     "default_popup": "index.html",
-    "default_icon": {
-      // "16": "icons/icon16.png",
-      // "48": "icons/icon48.png",
-      // "128": "icons/icon128.png"
-    }
+    "default_title": "Open Traffic Panel"
   },
-  "permissions": ["storage", "tabs", "activeTab", "scripting"]
+  "background": { "service_worker": "background.js" },
+  "permissions": ["tabs", "storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"]
 }
