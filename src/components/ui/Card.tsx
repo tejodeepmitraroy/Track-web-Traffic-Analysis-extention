@@ -2,20 +2,23 @@ import React from 'react';
 import { cn } from '../../lib/utils';
 
 interface CardProps {
-	children: React.ReactNode;
+	children?: React.ReactNode;
 	className?: string;
 }
 
 export const Card: React.FC<CardProps> = ({ children, className }) => (
-	<div className={cn(`h-fit rounded-2xl bg-white py-4 shadow`, className)}>
+	<div
+		className={cn(
+			`bg-background flex h-fit flex-col gap-2 rounded-2xl py-4 shadow`,
+			className
+		)}
+	>
 		{children}
 	</div>
 );
 
 export const CardHeader: React.FC<CardProps> = ({ children, className }) => (
-	<div className={cn(` px-4`, className)}>
-		{children}
-	</div>
+	<div className={cn(`w-full px-4`, className)}>{children}</div>
 );
 
 export const CardTitle: React.FC<CardProps> = ({
@@ -30,7 +33,7 @@ export const CardTitle: React.FC<CardProps> = ({
 export const CardContent: React.FC<CardProps> = ({
 	children,
 	className = '',
-}) => <div className={`p-4 ${className}`}>{children}</div>;
+}) => <div className={`px-4 ${className}`}>{children}</div>;
 
 export const CardFooter: React.FC<CardProps> = ({
 	children,
@@ -48,7 +51,7 @@ export const StatCard: React.FC<{
 	icon?: React.ReactNode;
 	trend?: 'up' | 'down' | 'neutral';
 	trendValue?: string;
-}> = ({ title, value, icon, trend, trendValue }) => {
+}> = ({ title, value, trend, trendValue }) => {
 	const trendColors = {
 		up: 'text-green-500',
 		down: 'text-red-500',
@@ -68,25 +71,8 @@ export const StatCard: React.FC<{
 						</div>
 					)}
 				</div>
-				{icon && <div className="rounded-lg bg-blue-100 p-3">{icon}</div>}
+				{/* {icon && <div className="rounded-lg bg-blue-100 p-3">{icon}</div>} */}
 			</CardContent>
 		</Card>
 	);
 };
-
-export const ChartCard: React.FC<{
-	title: string;
-	children: React.ReactNode;
-	className?: string;
-}> = ({ title, children, className = '' }) => {
-	return (
-		<Card className={className}>
-			<CardHeader>
-				<CardTitle>{title}</CardTitle>
-			</CardHeader>
-			<CardContent>{children}</CardContent>
-		</Card>
-	);
-};
-
-export default Card;

@@ -1,14 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 
-// import { useApiData } from '../../stores/useDataStore';
-
-const TopCountry = () => {
-	// const TopCountry = useApiData((state) => state.TopCountry);
+const Ranking = () => {
 	return (
 		<section className="mt-6 w-full">
 			<Card>
 				<CardHeader>
-					<CardTitle>Top Keywords</CardTitle>
+					<CardTitle>Ranking</CardTitle>
 				</CardHeader>
 				<CardContent className="gap-6"></CardContent>
 			</Card>
@@ -16,4 +13,4 @@ const TopCountry = () => {
 	);
 };
 
-export default TopCountry;
+export default Ranking;

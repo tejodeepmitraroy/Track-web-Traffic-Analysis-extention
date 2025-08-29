@@ -35,12 +35,12 @@ interface GetAnalysis {
 	IsSmall: false;
 	Policy: 0;
 	TrafficSources: {
-		Social: string;
-		'Paid Referrals': string;
-		Mail: string;
-		Referrals: string;
-		Search: string;
-		Direct: string;
+		Social: number;
+		'Paid Referrals': number;
+		Mail: number;
+		Referrals: number;
+		Search: number;
+		Direct: number;
 	};
 	Category: string;
 	LargeScreenshot: string;
@@ -57,7 +57,7 @@ interface GetAnalysis {
 		Name: string;
 		EstimatedValue: number;
 		Volume: number;
-		Cpc: number;
+		Cpc: number | null;
 	}>;
 
 	SnapshotDate: string;
