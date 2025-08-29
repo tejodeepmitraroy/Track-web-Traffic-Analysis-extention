@@ -83,7 +83,7 @@
   iframe.id = IFRAME_ID;
   iframe.src = chrome.runtime.getURL("index.html");
   Object.assign(iframe.style, {
-    width: "400px",
+    width: "500px",
     height: "100%",
     border: "none",
     boxShadow: "0 0 16px rgba(0,0,0,0.25)",

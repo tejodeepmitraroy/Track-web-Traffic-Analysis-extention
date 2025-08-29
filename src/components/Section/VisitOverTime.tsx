@@ -9,13 +9,15 @@ import {
 } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { HiOutlineDesktopComputer } from 'react-icons/hi';
+import { useApiData } from '../../stores/useDataStore';
 
 const VisitOverTime = () => {
-	const data = [
-		{ month: 'May', visits: 480000000 },
-		{ month: 'Jun', visits: 490000000 },
-		{ month: 'Jul', visits: 520000000 },
-	];
+	const visitsData = useApiData((state) => state.EstimatedMonthlyVisits);
+	const data = Object.entries(visitsData).map(([date, visits]) => ({
+		month: new Date(date).toLocaleString('default', { month: 'short' }),
+		visits: Math.round(visits / 1000000) * 1000000, // Round to nearest million
+	}));
+
 	return (
 		<section className="mt-6 w-full">
 			<Card>
@@ -29,7 +31,7 @@ const VisitOverTime = () => {
 							Traffic
 						</span>
 
-						<select
+						{/* <select
 							name=""
 							id=""
 							className="bg-foreground flex w-fit items-center justify-between rounded-xl p-1"
@@ -37,7 +39,7 @@ const VisitOverTime = () => {
 							<option value="">All Traffic</option>
 							<option value="">All Traffic</option>
 							<option value="">All Traffic</option>
-						</select>
+						</select> */}
 					</section>
 
 					<section className="">
@@ -61,12 +63,12 @@ const VisitOverTime = () => {
 								/>
 								<YAxis
 									tick={{ fill: '#374151', fontSize: 12 }}
-									domain={[0, 600000000]} // control scale (0 → 600M)
-									tickFormatter={(value) => `${value / 1000000}M`} // show "100M", "200M"
+									domain={[0, 1000000000]} // control scale (0 → 10M)
+									tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`} // show "0.5M", "1.0M"
 								/>
 								<Tooltip
 									formatter={(value) =>
-										`${((value as number) / 1000000).toFixed(0)}M`
+										`${((value as number) / 1000000).toFixed(1)}M`
 									}
 								/>
 

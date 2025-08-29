@@ -1,4 +1,7 @@
-const Header = ({ domain }: { domain: string }) => {
+import { useApiData } from '../../stores/useDataStore';
+
+const Header = () => {
+	const domain = useApiData((state) => state.SiteName);
 	return (
 		<header className="flex w-full flex-col items-start gap-3 bg-gray-700 p-6">
 			<section className="flex w-full items-start">
@@ -14,7 +17,7 @@ const Header = ({ domain }: { domain: string }) => {
 				<div className="flex h-8 w-8 flex-col items-center justify-center rounded-md bg-gray-50 p-2">
 					<img src="/icons/magnifier.png" alt="" width={10} height={10} />
 				</div>
-				<div className="w-full text-left text-lg">
+				<div className="w-full text-left text-xl font-semibold">
 					<span>{domain}</span>
 				</div>
 			</section>
