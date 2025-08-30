@@ -1,5 +1,6 @@
 interface GetAnalysis {
 	Version: number;
+	
 	SiteName: string;
 	Description: string;
 	TopCountryShares: Array<{

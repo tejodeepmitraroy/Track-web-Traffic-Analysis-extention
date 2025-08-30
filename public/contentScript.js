@@ -20,3 +20,19 @@ window.addEventListener('message', (event) => {
     });
   }
 });
+
+function getFaviconUrl() {
+  const favicon =
+    document.querySelector<HTMLLinkElement>("link[rel~='icon']") ||
+    document.querySelector<HTMLLinkElement>("link[rel='shortcut icon']");
+
+  if (favicon?.href) {
+    return favicon.href;
+  }
+
+  // fallback to /favicon.ico
+  return `${location.origin}/favicon.ico`;
+}
+
+// Send favicon to background/popup
+chrome.runtime.sendMessage({ type: "FAVICON", favicon: getFaviconUrl() });

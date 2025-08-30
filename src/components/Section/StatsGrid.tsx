@@ -38,7 +38,7 @@ const StatsGrid = () => {
 				trendValue="12% from last month"
 			/>
 			<StatCard
-				title="Page Views"
+				title="Page per Visit"
 				value={formattedPageViews}
 				icon={<FiEye className="text-xl text-green-600" />}
 				trend="up"

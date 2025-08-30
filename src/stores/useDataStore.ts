@@ -1,68 +1,86 @@
 import { create } from 'zustand';
 
 // Initial state that matches GetAnalysis interface
-const initialState: GetAnalysis = {
-  Version: 0,
-  SiteName: '',
-  Description: '',
-  TopCountryShares: [],
-  Title: '',
-  Engagments: {
-    BounceRate: '',
-    Month: '',
-    Year: '',
-    PagePerVisit: '',
-    Visits: '',
-    TimeOnSite: ''
-  },
-  EstimatedMonthlyVisits: {},
-  GlobalRank: {
-    Rank: 0
-  },
-  CountryRank: {
-    Country: 0,
-    CountryCode: '',
-    Rank: 0
-  },
-  CategoryRank: {
-    Rank: '',
-    Category: ''
-  },
-  GlobalCategoryRank: null,
-  IsSmall: false,
-  Policy: 0,
-  TrafficSources: {
-    Social: 0,
-    'Paid Referrals': 0,
-    Mail: 0,
-    Referrals: 0,
-    Search: 0,
-    Direct: 0
-  },
-  Category: '',
-  LargeScreenshot: '',
-  IsDataFromGa: false,
-  Countries: [],
-  Competitors: {
-    TopSimilarityCompetitors: []
-  },
-  Notification: {
-    Content: null
-  },
-  TopKeywords: [],
-  SnapshotDate: ''
+const initialState: GetAnalysis & { favicon: string } = {
+	Version: 0,
+	favicon: '/icons/magnifier.png',
+	SiteName: '',
+	Description: '',
+	TopCountryShares: [],
+	Title: '',
+	Engagments: {
+		BounceRate: '',
+		Month: '',
+		Year: '',
+		PagePerVisit: '',
+		Visits: '',
+		TimeOnSite: '',
+	},
+	EstimatedMonthlyVisits: {},
+	GlobalRank: {
+		Rank: 0,
+	},
+	CountryRank: {
+		Country: 0,
+		CountryCode: '',
+		Rank: 0,
+	},
+	CategoryRank: {
+		Rank: '',
+		Category: '',
+	},
+	GlobalCategoryRank: null,
+	IsSmall: false,
+	Policy: 0,
+	TrafficSources: {
+		Social: 0,
+		'Paid Referrals': 0,
+		Mail: 0,
+		Referrals: 0,
+		Search: 0,
+		Direct: 0,
+	},
+	Category: '',
+	LargeScreenshot: '',
+	IsDataFromGa: false,
+	Countries: [],
+	Competitors: {
+		TopSimilarityCompetitors: [],
+	},
+	Notification: {
+		Content: null,
+	},
+	TopKeywords: [],
+	SnapshotDate: '',
 };
 
 export interface ApiDataStore extends GetAnalysis {
-  setApiData: (data: GetAnalysis) => void;
+
+	favicon: string;
 }
 
-const useDataStore = create<ApiDataStore>((set) => ({
-  ...initialState,
-  setApiData: (data: GetAnalysis) => set({ ...data }),
+export interface ApiDataActions {
+	setApiData: (data: GetAnalysis) => void;
+	setFavicon: (favicon: string) => void;
+}
+	
+
+// const useDataStore = create<ApiDataStore>((set) => ({
+// 	...initialState,
+// 	setFavicon: (favicon: string) => set({ favicon }),
+// 	setApiData: (data: GetAnalysis) => set({ ...data }),
+// }));
+
+type ApiStore = ApiDataStore & ApiDataActions;
+
+
+export const useApiData = create<ApiStore>((set) => ({
+	...initialState,
+	setApiData: (data) => set({ ...data }),
+	setFavicon: (favicon: string) => set({ favicon }),
 }));
 
-export default useDataStore;
+export default useApiData ;
 // 	SiteName: 'x.com',
 // 	Description:
 // 		'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.',
@@ -1438,10 +1456,3 @@ export default useDataStore;
 // 	],
 // 	SnapshotDate: '2025-07-01T00:00:00+00:00',
 // };
-
-export const useApiData = create<ApiDataStore>(
-  (set) => ({
-    ...initialState,
-    setApiData: (data) => set({ ...data })
-  })
-);
