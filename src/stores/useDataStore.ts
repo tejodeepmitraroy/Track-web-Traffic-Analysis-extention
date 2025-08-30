@@ -1,20 +1,68 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ApiDataState extends GetAnalysis {}
+// Initial state that matches GetAnalysis interface
+const initialState: GetAnalysis = {
+  Version: 0,
+  SiteName: '',
+  Description: '',
+  TopCountryShares: [],
+  Title: '',
+  Engagments: {
+    BounceRate: '',
+    Month: '',
+    Year: '',
+    PagePerVisit: '',
+    Visits: '',
+    TimeOnSite: ''
+  },
+  EstimatedMonthlyVisits: {},
+  GlobalRank: {
+    Rank: 0
+  },
+  CountryRank: {
+    Country: 0,
+    CountryCode: '',
+    Rank: 0
+  },
+  CategoryRank: {
+    Rank: '',
+    Category: ''
+  },
+  GlobalCategoryRank: null,
+  IsSmall: false,
+  Policy: 0,
+  TrafficSources: {
+    Social: 0,
+    'Paid Referrals': 0,
+    Mail: 0,
+    Referrals: 0,
+    Search: 0,
+    Direct: 0
+  },
+  Category: '',
+  LargeScreenshot: '',
+  IsDataFromGa: false,
+  Countries: [],
+  Competitors: {
+    TopSimilarityCompetitors: []
+  },
+  Notification: {
+    Content: null
+  },
+  TopKeywords: [],
+  SnapshotDate: ''
+};
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ApiDataActions {
-	setApiData: (data: GetAnalysis) => void;
+export interface ApiDataStore extends GetAnalysis {
+  setApiData: (data: GetAnalysis) => void;
 }
 
-type ApiDataStore = ApiDataState & ApiDataActions;
+const useDataStore = create<ApiDataStore>((set) => ({
+  ...initialState,
+  setApiData: (data: GetAnalysis) => set({ ...data }),
+}));
 
-
-
-// const initialState: ApiDataState = {
-// 	Version: 1,
+export default useDataStore;
 // 	SiteName: 'x.com',
 // 	Description:
 // 		'From breaking news and entertainment to sports and politics, get the full story with all the live commentary.',
@@ -1391,8 +1439,9 @@ type ApiDataStore = ApiDataState & ApiDataActions;
 // 	SnapshotDate: '2025-07-01T00:00:00+00:00',
 // };
 
-export const useApiData = create<ApiDataStore>()(
-	devtools((set) => ({
-		setApiData: (data) => set({ ...data }),
-	}))
+export const useApiData = create<ApiDataStore>(
+  (set) => ({
+    ...initialState,
+    setApiData: (data) => set({ ...data })
+  })
 );

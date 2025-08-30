@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import VisitOverTime from '../components/Section/VisitOverTime';
 import Header from '../components/ui/Header';
 import StatsGrid from '../components/Section/StatsGrid';
@@ -9,78 +9,37 @@ import Footer from '../components/Footer';
 import { getAnalysis } from '../api/api-fetcher';
 import { useApiData } from '../stores/useDataStore';
 
+
 const Dashboard = () => {
-	// const [analysisData] = useState<GetAnalysis | null>(null);
+	
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [url, setUrl] = useState<string>('');
 
 	const setApiData = useApiData((store) => store.setApiData);
-	const getAnalysisData = useCallback(async () => {
-		try {
-			setIsLoading(true);
-			const data = await getAnalysis(url);
-			if (data) {
-				setApiData(data);
-			}
-		} catch (err) {
-			setError('Failed to fetch analysis data');
-			console.error(err);
-		} finally {
-			setIsLoading(false);
-		}
-	}, [url]);
 
 	useEffect(() => {
-		if (!url) return; // don't fetch until url is set
-		getAnalysisData();
-	}, [url, getAnalysisData]);
+		chrome.runtime.sendMessage({ type: 'GET_TAB_URL' }, async (response) => {
+			if (response?.url) {
+				const domain = response.url.split('/')[2];
+				// setDomain(domain);
 
-	useEffect(() => {
-		let mounted = true;
+				try {
+					setIsLoading(true);
+					if (domain) {
+						const data = await getAnalysis(domain);
+						console.log(data);
 
-		// Function to set URL if component is still mounted
-		const safeSetUrl = (newUrl: string) => {
-			if (mounted) {
-				setUrl(newUrl);
-			}
-		};
-
-		// Try to get URL directly if in extension context
-		const getTabUrl = () => {
-			try {
-				if (chrome?.tabs) {
-					chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-						if (tabs[0]?.url) {
-							safeSetUrl(tabs[0].url);
-						}
-					});
+						setApiData(data!);
+					}
+				} catch (err) {
+					setError('Failed to fetch analysis data');
+					console.error(err);
+				} finally {
+					setIsLoading(false);
 				}
-			} catch (error) {
-				console.error('Error getting tab URL:', error);
 			}
-		};
-
-		// Request URL from parent window
-		try {
-			window.parent.postMessage({ type: 'GET_TAB_URL' }, '*');
-		} catch (error) {
-			console.error('Error posting message to parent:', error);
-		}
-
-		// Try direct tab URL first
-		getTabUrl();
-
-		// Handle messages from content script or parent
-		const handleMessage = (event: MessageEvent) => {
-			if (event.data?.type === 'TAB_URL' && event.data.url) {
-				setUrl(event.data.url);
-			}
-		};
-
-		window.addEventListener('message', handleMessage);
-		return () => window.removeEventListener('message', handleMessage);
-	}, []);
+		});
+	}, [setApiData]);
 
 	if (isLoading) {
 		return (

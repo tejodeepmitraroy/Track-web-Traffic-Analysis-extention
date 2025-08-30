@@ -65,3 +65,16 @@
   --color-text:#3B82F6;
   
 }
+
+ html, body {
+    margin: 0;
+    padding: 0;
+    width: 500px;   /* set popup width */
+    height: 600px;  /* set popup height */
+    overflow: hidden;
+  }
+
+  #root {
+  width: 100%;
+  height: 100%;
+}

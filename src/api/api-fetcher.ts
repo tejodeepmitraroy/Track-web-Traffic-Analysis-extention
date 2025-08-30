@@ -1,4 +1,4 @@
-import { apiClient } from '../config/api-config';
+import { apiClient } from '../services/api';
 
 export const getAnalysis = async (
 	domain: string

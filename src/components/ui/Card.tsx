@@ -51,12 +51,14 @@ export const StatCard: React.FC<{
 	icon?: React.ReactNode;
 	trend?: 'up' | 'down' | 'neutral';
 	trendValue?: string;
-}> = ({ title, value, trend, trendValue }) => {
-	const trendColors = {
-		up: 'text-green-500',
-		down: 'text-red-500',
-		neutral: 'text-gray-500',
-	};
+}> = ({ title, value,
+	//  trend, trendValue
+	 }) => {
+	// const trendColors = {
+	// 	up: 'text-green-500',
+	// 	down: 'text-red-500',
+	// 	neutral: 'text-gray-500',
+	// };
 
 	return (
 		<Card>
@@ -64,12 +66,12 @@ export const StatCard: React.FC<{
 				<div>
 					<p className="text-sm font-medium text-gray-500">{title}</p>
 					<p className="text-2xl font-bold text-gray-900">{value}</p>
-					{trend && trendValue && (
+					{/* {trend && trendValue && (
 						<div className={`flex items-center text-sm ${trendColors[trend]}`}>
 							{trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'}
 							<span className="ml-1">{trendValue}</span>
 						</div>
-					)}
+					)} */}
 				</div>
 				{/* {icon && <div className="rounded-lg bg-blue-100 p-3">{icon}</div>} */}
 			</CardContent>
